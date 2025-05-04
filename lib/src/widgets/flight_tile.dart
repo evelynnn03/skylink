@@ -1,14 +1,14 @@
-// flight_tile.dart
 import 'package:flutter/material.dart';
 import 'dart:math';
 import '../constants/variables.dart';
+import '../model/flight_model.dart';
 import '../service/airport_service.dart';
 
 class FlightTile extends StatelessWidget {
-  final Map<String, dynamic> flight;
+  final Flight flight;
   final VoidCallback onTap;
   final bool isFavorite;
-  final Function(Map<String, dynamic>) onFavoriteToggle;
+  final Function(Flight) onFavoriteToggle;
 
   const FlightTile({
     Key? key,
@@ -24,8 +24,8 @@ class FlightTile extends StatelessWidget {
     double tileHeight = screenHeight * 0.2;
     double sizedBoxHeight(height) => height < 600 ? 8 : 10;
 
-    String departureCity = AirportService.getCityFromCode(flight['departure']);
-    String arrivalCity = AirportService.getCityFromCode(flight['arrival']);
+    String departureCity = AirportService.getCityFromCode(flight.originAirport);
+    String arrivalCity = AirportService.getCityFromCode(flight.destinationAirport);
 
     return GestureDetector(
       onTap: onTap,
@@ -38,21 +38,17 @@ class FlightTile extends StatelessWidget {
               color: Colors.black,
             ),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
-                      vertical: 8.0,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          flight['flight_no'],
+                          flight.flightNumber,
                           style: TextStyle(
                             fontSize: Variables.responsiveFontSize(context, 22),
                             color: Colors.white,
@@ -76,9 +72,9 @@ class FlightTile extends StatelessWidget {
                     children: [
                       _flightColumn(
                         context,
-                        flight['departure'],
+                        flight.originAirport,
                         departureCity,
-                        flight['scheduled_departure'],
+                        flight.scheduledDeparture,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
@@ -93,9 +89,9 @@ class FlightTile extends StatelessWidget {
                       ),
                       _flightColumn(
                         context,
-                        flight['arrival'],
+                        flight.destinationAirport,
                         arrivalCity,
-                        flight['scheduled_arrival'],
+                        flight.scheduledArrival,
                       ),
                     ],
                   ),
@@ -110,13 +106,13 @@ class FlightTile extends StatelessWidget {
   }
 
   Widget _flightColumn(
-      BuildContext context, String city, String country, String time) {
+      BuildContext context, String code, String city, DateTime time) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          city,
+          code,
           style: TextStyle(
             fontSize: Variables.responsiveFontSize(context, 40),
             fontWeight: FontWeight.bold,
@@ -125,7 +121,7 @@ class FlightTile extends StatelessWidget {
           ),
         ),
         Text(
-          country,
+          city,
           style: TextStyle(
             fontSize: Variables.responsiveFontSize(context, 16),
             color: Colors.white,
@@ -133,7 +129,7 @@ class FlightTile extends StatelessWidget {
           ),
         ),
         Text(
-          time.substring(11, 16),
+          "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}",
           style: TextStyle(
             fontSize: Variables.responsiveFontSize(context, 16),
             color: Colors.white,

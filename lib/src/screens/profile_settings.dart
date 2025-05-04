@@ -1,7 +1,8 @@
 import 'package:flight_delay_app/src/widgets/textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
+import 'dart:io';
 import '../constants/variables.dart';
 
 class ProfileSettings extends StatefulWidget {
@@ -15,6 +16,18 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   final fullNameTextController = TextEditingController();
   final phoneNoTextController = TextEditingController();
   final emailTextController = TextEditingController();
+
+  File? _profileImage;
+  final _picker = ImagePicker();
+
+  pickImage() async {
+    final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      _profileImage = File(pickedImage.path);
+      setState(() {});
+    }
+  }
 
   @override
   void dispose() {
@@ -50,28 +63,35 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               children: [
                 Stack(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Variables.primaryColor,
-                      radius: 40,
-                      child: Icon(
-                        Icons.person_rounded,
-                        size: Variables.responsiveIconSize(context, 70),
-                        color: Colors.white,
+                    GestureDetector(
+                      onTap: () {
+                        pickImage();
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Variables.primaryColor,
+                        radius: 40,
+                        backgroundImage: _profileImage != null
+                            ? FileImage(_profileImage!)
+                            : null,
+                        child: _profileImage == null
+                            ? Icon(
+                                Icons.person_rounded,
+                                size: Variables.responsiveIconSize(context, 70),
+                                color: Colors.white,
+                              )
+                            : null,
                       ),
                     ),
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.camera_alt, size: 16),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
                         ),
+                        child: const Icon(Icons.camera_alt, size: 16),
                       ),
                     ),
                   ],

@@ -97,7 +97,7 @@ class FlightListTiles extends StatelessWidget {
                     );
                   },
                   onFavoriteToggle: (flight) {
-                    flightProvider.toggleFavorite(flight);
+                    flightProvider.toggleFavorite(flight.flightNumber);
                   },
                 );
               },

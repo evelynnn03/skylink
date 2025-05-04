@@ -3,6 +3,7 @@ import 'package:flight_delay_app/src/screens/profile_settings.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/variables.dart';
+import '../widgets/bottom_sheet.dart';
 import '../widgets/vertical_list_tiles.dart';
 
 class AccountSettings extends StatefulWidget {
@@ -119,7 +120,25 @@ class _AccountSettingsState extends State<AccountSettings> {
                   title: 'Delete account',
                   icon: Icons.delete,
                   containerCol: const Color.fromARGB(255, 255, 166, 159),
-                  onTap: () {},
+                  onTap: () {
+                    showBottomSheetModal(
+                      context,
+                      'Delete Account',
+                      'Are you sure you want to delete your account?\nThis action is irreversible.',
+                      true,
+                      buttonText: 'Confirm Delete',
+                      onTap: () {
+                        // You can handle delete logic here
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'A link for account deletion has been sent to your email.',
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),

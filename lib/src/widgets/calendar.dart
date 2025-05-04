@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 // This function shows the calendar as a dialog with action buttons
 Future<DateTime?> showCalendar(
   BuildContext context, {
-  required DateTime minDate,
+  DateTime? minDate,
   DateTime? maxDate,
   bool maxDateEndOfYear = false,
 }) async {
@@ -15,7 +15,7 @@ Future<DateTime?> showCalendar(
     builder: (BuildContext context) {
       return Dialog(
         child: CalendarWidget(
-          minDate: minDate,
+          minDate: minDate ?? DateTime(2022, 1, 1),
           maxDate: maxDate,
           maxDateEndOfYear: maxDateEndOfYear,
           showActionButtons: true,

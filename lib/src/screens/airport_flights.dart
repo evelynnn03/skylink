@@ -3,7 +3,6 @@ import 'package:flight_delay_app/src/screens/flight_info.dart';
 import 'package:flight_delay_app/src/widgets/flight_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../provider/flight_provider.dart';
 
 class AirportFlights extends StatelessWidget {
@@ -85,7 +84,8 @@ class AirportFlights extends StatelessWidget {
               itemCount: flights.length,
               itemBuilder: (context, index) {
                 final flight = flights[index];
-                final isFavorite = flightProvider.isFavorite(flight);
+                final isFavorite =
+                    flightProvider.isFavorite(flight.flightNumber);
 
                 return FlightTile(
                   flight: flight,
@@ -94,12 +94,13 @@ class AirportFlights extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FlightInfo(flight: flight),
+                        builder: (context) =>
+                            FlightInfo(flight: flight),
                       ),
                     );
                   },
                   onFavoriteToggle: (flight) {
-                    flightProvider.toggleFavorite(flight);
+                    flightProvider.toggleFavorite(flight.id);
                   },
                 );
               },

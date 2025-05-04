@@ -1,115 +1,109 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../model/flight_model.dart';
 import '../service/airport_service.dart';
 
 class FlightProvider extends ChangeNotifier {
-  List<dynamic> _allFlights = [];
+  List<Flight> _allFlights = [];
   final Set<String> _favoriteFlightIds = {};
-  Map<String, List<dynamic>> _airportFlights = {};
+  Map<String, List<Flight>> _airportFlights = {};
 
-  List<dynamic> get allFlights => _allFlights;
-  List<dynamic> get favoriteFlights => _allFlights
-      .where((flight) => _favoriteFlightIds.contains(flight['id']))
+  List<Flight> get allFlights => _allFlights;
+
+  List<Flight> get favoriteFlights => _allFlights
+      .where((flight) => _favoriteFlightIds.contains(flight.id))
       .toList();
 
+  // Get list of unique airports
   List<Map<String, dynamic>> getAllAirports() {
-    List<Map<String, dynamic>> airports =
-        _airportFlights.keys.map((airportCode) {
+    return _airportFlights.keys.map((airportCode) {
       return {
         'airport_code': airportCode,
         'airport_name': AirportService.getNameFromCode(airportCode),
         'upcoming_flights': _airportFlights[airportCode]?.length ?? 0,
       };
-    }).toList();
-
-    // Sort airports by name alphabetically
-    airports
-        .sort((a, b) => a['airport_name'].toString().toLowerCase().compareTo(
-              b['airport_name'].toString().toLowerCase(),
-            ));
-
-    return airports;
+    }).toList()
+      ..sort((a, b) => a['airport_name']
+          .toString()
+          .toLowerCase()
+          .compareTo(b['airport_name'].toString().toLowerCase()));
   }
 
-  // Get flights by airport
-  List<dynamic> getFlightsByAirport(String airportCode) {
+  // Get flights by specific airport code
+  List<Flight> getFlightsByAirport(String airportCode) {
     return _airportFlights[airportCode] ?? [];
   }
 
-  // Check if a flight is favorited
-  bool isFavorite(Map<String, dynamic> flight) {
-    return _favoriteFlightIds.contains(flight['id']);
-  }
+  bool isFavorite(String flightId) => _favoriteFlightIds.contains(flightId);
 
-  // Toggle favorite status
-  void toggleFavorite(Map<String, dynamic> flight) {
-    if (_favoriteFlightIds.contains(flight['id'])) {
-      _favoriteFlightIds.remove(flight['id']);
+  void toggleFavorite(String flightId) {
+    if (_favoriteFlightIds.contains(flightId)) {
+      _favoriteFlightIds.remove(flightId);
     } else {
-      _favoriteFlightIds.add(flight['id']);
+      _favoriteFlightIds.add(flightId);
     }
     notifyListeners();
   }
 
-  // Initialize and load flights
   Future<void> loadFlights() async {
     try {
       final String response =
           await rootBundle.loadString('assets/flight_data.json');
-      final List<dynamic> data = json.decode(response);
+      final List<dynamic> rawData = json.decode(response);
 
-      // Ensure each flight has an id
-      for (var i = 0; i < data.length; i++) {
-        if (!data[i].containsKey('id')) {
-          data[i]['id'] = i.toString();
-        }
-      }
+      _allFlights = rawData.asMap().entries.map((entry) {
+        int index = entry.key;
+        Map<String, dynamic> data = entry.value;
+        data['id'] ??= index.toString(); // Ensure unique ID
+        return Flight.fromJson(data);
+      }).toList();
 
-      _allFlights = data;
-
-      // Organize flights by airport
       _organizeFlightsByAirport();
-
       notifyListeners();
     } catch (e) {
       print('Error loading flights: $e');
     }
   }
 
-  // Organize flights by airport
   void _organizeFlightsByAirport() {
-    _airportFlights = {};
-
+    _airportFlights.clear();
     for (var flight in _allFlights) {
-      String departureCode = flight['departure'];
-      String arrivalCode = flight['arrival'];
-
-      // Add to departure airport list
-      _airportFlights.putIfAbsent(departureCode, () => []).add(flight);
-
-      // Add to arrival airport list
-      _airportFlights.putIfAbsent(arrivalCode, () => []).add(flight);
+      _airportFlights.putIfAbsent(flight.originAirport, () => []).add(flight);
+      _airportFlights
+          .putIfAbsent(flight.destinationAirport, () => [])
+          .add(flight);
     }
   }
 
-  Map<String, dynamic>? searchFlight(String flightNumber, DateTime? date) {
+  // Search flight by flight number and date
+  Flight? searchFlight(String flightNumber, DateTime? date) {
     if (date == null) return null;
 
-    // Format the date to match the API format (YYYY-MM-DD)
     final dateString =
         "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
 
-    return _allFlights.firstWhere(
-      (flight) {
-        // Extract only the date (YYYY-MM-DD) from the flight's scheduled times
-        String departureDate = flight['scheduled_departure'].split('T')[0];
-        String arrivalDate = flight['scheduled_arrival'].split('T')[0];
+    try {
+      return _allFlights.firstWhere(
+        (flight) {
+          final depDate =
+              flight.scheduledDeparture.toIso8601String().split('T')[0];
+          final arrDate =
+              flight.scheduledArrival.toIso8601String().split('T')[0];
 
-        return flight['flight_no'] == flightNumber &&
-            (departureDate == dateString || arrivalDate == dateString);
-      },
-      orElse: () => null,
-    );
+          return flight.flightNumber.toLowerCase() ==
+                  flightNumber.toLowerCase() &&
+              (depDate == dateString || arrDate == dateString);
+        },
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  List<Flight> getUpcomingFlights(DateTime from) {
+    return _allFlights
+        .where((flight) => flight.scheduledDeparture.isAfter(from))
+        .toList();
   }
 }

@@ -28,9 +28,16 @@ class VerticalListTile extends StatelessWidget {
           padding: const EdgeInsets.all(25),
           height: containerHeight,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: containerCol ?? Colors.black,
-          ),
+              borderRadius: BorderRadius.circular(10),
+              color: containerCol ?? Colors.black,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  spreadRadius: 0.5,
+                  blurRadius: 8,
+                  offset: Offset(3, 3),
+                ),
+              ]),
           child: Row(
             children: [
               Icon(icon, color: Colors.white, size: 28),

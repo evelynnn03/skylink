@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math';
 
+import '../model/flight_model.dart';
 import '../service/airport_service.dart';
+import '../service/weather_service.dart';
 // import 'package:lottie/lottie.dart';
 
 class FlightInfo extends StatefulWidget {
-  final Map<String, dynamic> flight;
+  final Flight flight;
   const FlightInfo({super.key, required this.flight});
 
   @override
@@ -28,7 +30,7 @@ class _FlightInfoState extends State<FlightInfo> {
     return weatherMapping[condition] ?? 'Unknown';
   }
 
-  String _getFlightStatus(Map<String, dynamic> flight) {
+  String _getFlightStatus(Flight flight) {
     // You would implement logic to determine flight status
     // For now, returning a placeholder
     return "On Time";
@@ -48,21 +50,35 @@ class _FlightInfoState extends State<FlightInfo> {
   }
 
   int condition = 0;
+  Map<String, dynamic>? _weather;
+  bool _loadingWeather = true;
+
+  Future<void> _loadWeather() async {
+    final weather = await fetchWeatherData(widget.flight);
+    setState(() {
+      _weather = weather;
+      _loadingWeather = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWeather();
+  }
 
   @override
   Widget build(BuildContext context) {
     // Parse the flight data
     final flightData = widget.flight;
-    final flightNo = flightData['flight_no'] ?? 'UA1001';
-    final departure = flightData['departure'] ?? 'ATL';
-    final arrival = flightData['arrival'] ?? 'LAX';
+    final flightNo = flightData.flightNumber;
+    final departure = flightData.originAirport;
+    final arrival = flightData.destinationAirport;
     final flightStatus = _getFlightStatus(flightData);
 
     // Parse date and time
-    DateTime scheduledDeparture = DateTime.parse(
-        flightData['scheduled_departure'] ?? '2024-03-15T08:30:00');
-    DateTime scheduledArrival = DateTime.parse(
-        flightData['scheduled_arrival'] ?? '2024-03-15T12:15:00');
+    DateTime scheduledDeparture = flightData.scheduledDeparture;
+    DateTime scheduledArrival = flightData.scheduledArrival;
 
     // Format date and time strings
     String departureDate =
@@ -355,84 +371,101 @@ class _FlightInfoState extends State<FlightInfo> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            if (condition == 0)
-                              // Lottie.asset(
-                              //   'assets/animations/overcast.json',
-                              //   width: 100,
-                              //   height: 100,
-                              //   fit: BoxFit.cover,
-                              // )
-                              Icon(
-                                Icons.cloud,
-                                color: Variables.primaryColor,
-                                size: Variables.responsiveIconSize(context, 80),
+                        child: _loadingWeather
+                            ? Center(
+                                child: CircularProgressIndicator(),
                               )
-                            else
-                              Text(
-                                'Weather: ${_getWeatherText(condition)}', // Fallback Text
-                                style: TextStyle(
-                                  fontSize:
-                                      Variables.responsiveFontSize(context, 20),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Wind Speed',
-                                      style: TextStyle(
-                                        fontSize: Variables.responsiveFontSize(
-                                            context, 18),
-                                        color: Colors.black54,
+                            : _weather == null
+                                ? Text('Unable to load weather data')
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      if (condition == 0)
+                                        // Lottie.asset(
+                                        //   'assets/animations/overcast.json',
+                                        //   width: 100,
+                                        //   height: 100,
+                                        //   fit: BoxFit.cover,
+                                        // )
+                                        Icon(
+                                          Icons.cloud,
+                                          color: Variables.primaryColor,
+                                          size: Variables.responsiveIconSize(
+                                              context, 80),
+                                        )
+                                      else
+                                        Text(
+                                          'Weather: ${_getWeatherText(condition)}', // Fallback Text
+                                          style: TextStyle(
+                                            fontSize:
+                                                Variables.responsiveFontSize(
+                                                    context, 20),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Wind Speed',
+                                                style: TextStyle(
+                                                  fontSize: Variables
+                                                      .responsiveFontSize(
+                                                          context, 18),
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                              Text(
+                                                '${_weather!['wind_speed']} mph',
+                                                style: TextStyle(
+                                                  fontSize: Variables
+                                                      .responsiveFontSize(
+                                                          context, 20),
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                              height: medSizedBoxHeight(
+                                                  screenHeight)),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Visibility',
+                                                style: TextStyle(
+                                                  fontSize: Variables
+                                                      .responsiveFontSize(
+                                                          context, 18),
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                              Text(
+                                                '${_weather!['visibility']} miles',
+                                                style: TextStyle(
+                                                  fontSize: Variables
+                                                      .responsiveFontSize(
+                                                          context, 20),
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Text(
-                                      '22.3 mph',
-                                      style: TextStyle(
-                                        fontSize: Variables.responsiveFontSize(
-                                            context, 20),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                    height: medSizedBoxHeight(screenHeight)),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Visibility',
-                                      style: TextStyle(
-                                        fontSize: Variables.responsiveFontSize(
-                                            context, 18),
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    Text(
-                                      '16 miles',
-                                      style: TextStyle(
-                                        fontSize: Variables.responsiveFontSize(
-                                            context, 20),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                    ],
+                                  ),
                       ),
                     ],
                   ),

@@ -1,14 +1,15 @@
 import 'package:flight_delay_app/src/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'src/provider/flight_provider.dart';
 import 'src/service/airport_service.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (ctx) => FlightProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FlightProvider()),
+      ],
       child: MyApp(),
     ),
   );

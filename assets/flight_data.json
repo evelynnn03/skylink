@@ -1,133 +1,14 @@
 [
-    {
-      "flight_no": "UA1001",
-      "departure": "ATL",
-      "arrival": "LAX",
-      "scheduled_departure": "2025-03-01T08:30:00",
-      "scheduled_arrival": "2025-03-01T12:15:00",
-      "season": 1,
-      "departure_lat": 33.6407,
-      "departure_lon": -84.4277,
-      "arrival_lat": 33.9416,
-      "arrival_lon": -118.4085,
-      "distance_miles": 1946
-    },
-    {
-      "flight_no": "AA2002",
-      "departure": "DFW",
-      "arrival": "LGA",
-      "scheduled_departure": "2025-06-22T14:15:00",
-      "scheduled_arrival": "2025-06-22T17:00:00",
-      "season": 2,
-      "departure_lat": 32.8998,
-      "departure_lon": -97.0403,
-      "arrival_lat": 40.7769,
-      "arrival_lon": -73.8740,
-      "distance_miles": 1389
-    },
-    {
-      "flight_no": "DL3003",
-      "departure": "LGA",
-      "arrival": "SEA",
-      "scheduled_departure": "2025-04-10T18:45:00",
-      "scheduled_arrival": "2025-04-10T23:30:00",
-      "season": 3,
-      "departure_lat": 40.7769,
-      "departure_lon": -73.8740,
-      "arrival_lat": 47.4502,
-      "arrival_lon": -122.3088,
-      "distance_miles": 2422
-    },
-    {
-      "flight_no": "SW4004",
-      "departure": "PHX",
-      "arrival": "ORD",
-      "scheduled_departure": "2025-06-01T06:10:00",
-      "scheduled_arrival": "2025-06-01T09:00:00",
-      "season": 0,
-      "departure_lat": 33.4343,
-      "departure_lon": -112.0116,
-      "arrival_lat": 41.9742,
-      "arrival_lon": -87.9073,
-      "distance_miles": 1444
-    },
-    {
-      "flight_no": "UA5005",
-      "departure": "DEN",
-      "arrival": "CLT",
-      "scheduled_departure": "2025-04-28T11:20:00",
-      "scheduled_arrival": "2025-04-28T14:00:00",
-      "season": 0,
-      "departure_lat": 39.8561,
-      "departure_lon": -104.6737,
-      "arrival_lat": 35.2140,
-      "arrival_lon": -80.9431,
-      "distance_miles": 1335
-    },
-    {
-      "flight_no": "AA6006",
-      "departure": "LAS",
-      "arrival": "SEA",
-      "scheduled_departure": "2025-04-05T15:30:00",
-      "scheduled_arrival": "2025-04-05T17:15:00",
-      "season": 2,
-      "departure_lat": 36.0840,
-      "departure_lon": -115.1537,
-      "arrival_lat": 47.4502,
-      "arrival_lon": -122.3088,
-      "distance_miles": 866
-    },
-    {
-      "flight_no": "DL7007",
-      "departure": "ORD",
-      "arrival": "PHX",
-      "scheduled_departure": "2025-03-18T09:50:00",
-      "scheduled_arrival": "2025-03-18T12:45:00",
-      "season": 1,
-      "departure_lat": 41.9742,
-      "departure_lon": -87.9073,
-      "arrival_lat": 33.4343,
-      "arrival_lon": -112.0116,
-      "distance_miles": 1444
-    },
-    {
-      "flight_no": "SW8008",
-      "departure": "CLT",
-      "arrival": "LAX",
-      "scheduled_departure": "2025-05-12T17:40:00",
-      "scheduled_arrival": "2025-05-12T22:00:00",
-      "season": 3,
-      "departure_lat": 35.2140,
-      "departure_lon": -80.9431,
-      "arrival_lat": 33.9416,
-      "arrival_lon": -118.4085,
-      "distance_miles": 2125
-    },
-    {
-      "flight_no": "UA9009",
-      "departure": "SEA",
-      "arrival": "DFW",
-      "scheduled_departure": "2025-04-20T22:25:00",
-      "scheduled_arrival": "2025-04-21T02:45:00",
-      "season": 2,
-      "departure_lat": 47.4502,
-      "departure_lon": -122.3088,
-      "arrival_lat": 32.8998,
-      "arrival_lon": -97.0403,
-      "distance_miles": 1670
-    },
-    {
-      "flight_no": "AA1010",
-      "departure": "ATL",
-      "arrival": "ORD",
-      "scheduled_departure": "2025-06-05T07:15:00",
-      "scheduled_arrival": "2025-06-05T08:45:00",
-      "season": 3,
-      "departure_lat": 33.6407,
-      "departure_lon": -84.4277,
-      "arrival_lat": 41.9742,
-      "arrival_lon": -87.9073,
-      "distance_miles": 606
-    }
-  ]
-  
+  {
+    "flight_code": "MH123",
+    "scheduled_dep_timestamp": "2023-08-24T18:10:00",
+    "scheduled_arr_timestamp": "2023-08-24T23:30:00",
+    "origin_airport": "ATL",
+    "destination_airport": "CLT",
+    "origin_latitude": 2.7456,
+    "origin_longitude": 101.7072,
+    "destination_latitude": 1.3644,
+    "destination_longitude": 103.9915,
+    "season": "Summer"
+  }
+]

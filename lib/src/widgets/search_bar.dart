@@ -2,11 +2,11 @@ import 'package:flight_delay_app/src/constants/variables.dart';
 import 'package:flight_delay_app/src/screens/flight_info.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import '../model/flight_model.dart';
 import 'calendar.dart';
 
 class FlightSearchBar extends StatefulWidget {
-  final Function(String flightNumber, DateTime? date) onSearch;
+  final Flight? Function(String flightNumber, DateTime? date) onSearch;
 
   const FlightSearchBar({Key? key, required this.onSearch}) : super(key: key);
 
@@ -20,11 +20,9 @@ class _FlightSearchBarState extends State<FlightSearchBar> {
   DateTime? _selectedDate;
   final FocusNode _flightNumberFocus = FocusNode();
 
-  Future<void> _selectDate(BuildContext context) async {
+   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showCalendar(
       context,
-      minDate: DateTime.now(),
-      maxDate: DateTime.now().add(const Duration(days: 14)),
     );
 
     if (picked != null) {
