@@ -9,6 +9,7 @@ class Flight {
   final double originLongitude;
   final double destinationLatitude;
   final double destinationLongitude;
+  final int distance;
   final String season;
 
   Flight({
@@ -22,6 +23,7 @@ class Flight {
     required this.originLongitude,
     required this.destinationLatitude,
     required this.destinationLongitude,
+    required this.distance,
     required this.season,
   });
 
@@ -39,6 +41,7 @@ class Flight {
           double.parse(json['destination_latitude'].toString()),
       destinationLongitude:
           double.parse(json['destination_longitude'].toString()),
+      distance: json['distance'],
       season: json['season'],
     );
   }
@@ -55,6 +58,7 @@ class Flight {
       'origin_longitude': originLongitude,
       'destination_latitude': destinationLatitude,
       'destination_longitude': destinationLongitude,
+      'distance': distance,
       'season': season,
     };
   }

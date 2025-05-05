@@ -6,7 +6,7 @@ import 'dart:math';
 
 import '../model/flight_model.dart';
 import '../service/airport_service.dart';
-import '../service/weather_service.dart';
+import '../service/prediction_service.dart';
 // import 'package:lottie/lottie.dart';
 
 class FlightInfo extends StatefulWidget {
@@ -30,10 +30,10 @@ class _FlightInfoState extends State<FlightInfo> {
     return weatherMapping[condition] ?? 'Unknown';
   }
 
-  String _getFlightStatus(Flight flight) {
-    // You would implement logic to determine flight status
-    // For now, returning a placeholder
-    return "On Time";
+  String _getFlightStatus() {
+    // Use the prediction result as the flight status, fallback to "Loading..." if not available
+    if (_loadingPrediction) return "Loading...";
+    return _prediction ?? "Unknown";
   }
 
   Color _getStatusColor(String status) {
@@ -51,20 +51,45 @@ class _FlightInfoState extends State<FlightInfo> {
 
   int condition = 0;
   Map<String, dynamic>? _weather;
-  bool _loadingWeather = true;
+  String? _prediction;
+  bool _loadingPrediction = true;
 
-  Future<void> _loadWeather() async {
-    final weather = await fetchWeatherData(widget.flight);
+  Future<void> _loadPredictionAndWeather() async {
+    // Prepare flight data as a map for the API
+    final flight = widget.flight;
+    final flightData = {
+      'flight_code': flight.flightNumber,
+      'scheduled_dep_timestamp': flight.scheduledDeparture.toIso8601String(),
+      'scheduled_arr_timestamp': flight.scheduledArrival.toIso8601String(),
+      'origin_airport': flight.originAirport,
+      'destination_airport': flight.destinationAirport,
+      'origin_latitude': flight.originLatitude,
+      'origin_longitude': flight.originLongitude,
+      'destination_latitude': flight.destinationLatitude,
+      'destination_longitude': flight.destinationLongitude,
+      'distance': flight.distance,
+      'season': flight.season,
+    };
+
+    final result = await PredictionService.getPrediction(flightData);
     setState(() {
-      _weather = weather;
-      _loadingWeather = false;
+      if (result != null) {
+        _prediction = result['prediction']?.toString();
+        _weather = result['weather'];
+
+        // Optionally set condition if your weather data provides it
+        if (_weather != null && _weather!['condition'] != null) {
+          condition = _weather!['condition'];
+        }
+      }
+      _loadingPrediction = false;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _loadWeather();
+    _loadPredictionAndWeather();
   }
 
   @override
@@ -74,7 +99,7 @@ class _FlightInfoState extends State<FlightInfo> {
     final flightNo = flightData.flightNumber;
     final departure = flightData.originAirport;
     final arrival = flightData.destinationAirport;
-    final flightStatus = _getFlightStatus(flightData);
+    final flightStatus = _getFlightStatus();
 
     // Parse date and time
     DateTime scheduledDeparture = flightData.scheduledDeparture;
@@ -371,7 +396,7 @@ class _FlightInfoState extends State<FlightInfo> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: _loadingWeather
+                        child: _loadingPrediction
                             ? Center(
                                 child: CircularProgressIndicator(),
                               )

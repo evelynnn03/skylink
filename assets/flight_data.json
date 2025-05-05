@@ -1,14 +1,15 @@
 [
   {
     "flight_code": "MH123",
-    "scheduled_dep_timestamp": "2023-08-24T18:10:00",
-    "scheduled_arr_timestamp": "2023-08-24T23:30:00",
+    "scheduled_dep_timestamp": "2022-01-01T08:55:00",
+    "scheduled_arr_timestamp": "2022-01-01T10:10:00",
     "origin_airport": "ATL",
     "destination_airport": "CLT",
-    "origin_latitude": 2.7456,
-    "origin_longitude": 101.7072,
-    "destination_latitude": 1.3644,
-    "destination_longitude": 103.9915,
-    "season": "Summer"
+    "origin_latitude": 33.6367,
+    "origin_longitude": -84.4281,
+    "destination_latitude": 35.214,
+    "destination_longitude": -80.9431,
+    "distance": 226,	
+    "season": "Winter"
   }
 ]
