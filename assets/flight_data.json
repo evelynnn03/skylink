@@ -11,5 +11,65 @@
     "destination_longitude": -80.9431,
     "distance": 226,	
     "season": "Winter"
+  },
+
+
+  
+  {
+    "flight_code": "AA456",
+    "scheduled_dep_timestamp": "2022-05-25T16:25:00",
+    "scheduled_arr_timestamp": "2022-05-25T19:15:00",
+    "origin_airport": "PHX",
+    "destination_airport": "DEN",
+    "origin_latitude": 33.4343,
+    "origin_longitude": -112.012,
+    "destination_latitude": 39.8617,
+    "destination_longitude": -104.673,
+    "distance": 602,	
+    "season": "Spring"
+  },
+  {
+    "flight_code": "AA118",
+    "scheduled_dep_timestamp": "2023-08-09T16:15:00",
+    "scheduled_arr_timestamp": "2023-08-09T17:26:00",
+    "origin_airport": "DFW",
+    "destination_airport": "LAX",
+    "origin_latitude": 32.8968,
+    "origin_longitude": -97.038,
+    "destination_latitude": 33.9425,
+    "destination_longitude": -118.408,
+    "distance": 1235,	
+    "season": "Summer"
+  },
+  {
+    "flight_code": "F92631",
+    "scheduled_dep_timestamp": "2025-05-05T14:59:00",
+    "scheduled_arr_timestamp": "2025-05-05T16:20:00",
+    "origin_airport": "DFW",
+    "destination_airport": "DEN",
+    "origin_latitude": 32.8968,
+    "origin_longitude": -97.038,
+    "destination_latitude": 39.8617,
+    "destination_longitude": -104.673,
+    "distance": 770,
+    "season": "Spring"
+  },
+  {
+    "flight_code": "AA1665",
+    "scheduled_dep_timestamp": "2025-05-04T08:26:00",
+    "scheduled_arr_timestamp": "2025-05-04T15:45:00",
+    "origin_airport": "LAS",
+    "destination_airport": "CLT",
+    "origin_latitude": 36.0801,
+    "origin_longitude": -115.152,
+    "destination_latitude": 35.214,
+    "destination_longitude": -80.9431,
+    "distance": 1916,
+    "season": "Spring"
   }
+  
+  
+
+
+
 ]
