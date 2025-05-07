@@ -429,35 +429,36 @@ class _FlightInfoState extends State<FlightInfo> {
                                       //     size: Variables.responsiveIconSize(
                                       //         context, 80),
                                       //   )
-                                      if (condition == 0)
+                                      if (_weather!['conditions'] == 0)
                                         Icon(
                                           Icons.wb_sunny,
                                           color: Colors.amber,
                                           size: Variables.responsiveIconSize(
                                               context, 80),
                                         )
-                                      else if (condition == 1)
+                                      else if (_weather!['conditions'] == 1)
                                         Icon(
                                           Icons.cloud,
                                           color: Colors.blueGrey,
                                           size: Variables.responsiveIconSize(
                                               context, 80),
                                         )
-                                      else if (condition == 2)
+                                      else if (_weather!['conditions'] == 2)
                                         Icon(
                                           Icons.cloud_queue,
                                           color: Colors.lightBlue,
                                           size: Variables.responsiveIconSize(
                                               context, 80),
                                         )
-                                      else if (condition == 3 || condition == 4)
+                                      else if (_weather!['conditions'] == 3 ||
+                                          _weather!['conditions'] == 4)
                                         Icon(
                                           Icons.grain,
                                           color: Colors.blue,
                                           size: Variables.responsiveIconSize(
                                               context, 80),
                                         )
-                                      else if (condition == 5)
+                                      else if (_weather!['conditions'] == 5)
                                         Icon(
                                           Icons.ac_unit,
                                           color: Colors.lightBlueAccent,

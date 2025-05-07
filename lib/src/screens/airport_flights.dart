@@ -85,7 +85,7 @@ class AirportFlights extends StatelessWidget {
               itemBuilder: (context, index) {
                 final flight = flights[index];
                 final isFavorite =
-                    flightProvider.isFavorite(flight.flightNumber);
+                    flightProvider.isFavorite(flight);
 
                 return FlightTile(
                   flight: flight,
@@ -100,7 +100,7 @@ class AirportFlights extends StatelessWidget {
                     );
                   },
                   onFavoriteToggle: (flight) {
-                    flightProvider.toggleFavorite(flight.id);
+                    flightProvider.toggleFavorite(flight);
                   },
                 );
               },

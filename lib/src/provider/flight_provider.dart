@@ -35,13 +35,13 @@ class FlightProvider extends ChangeNotifier {
     return _airportFlights[airportCode] ?? [];
   }
 
-  bool isFavorite(String flightId) => _favoriteFlightIds.contains(flightId);
+  bool isFavorite(Flight flight) => _favoriteFlightIds.contains(flight.id);
 
-  void toggleFavorite(String flightId) {
-    if (_favoriteFlightIds.contains(flightId)) {
-      _favoriteFlightIds.remove(flightId);
+  void toggleFavorite(Flight flight) {
+    if (_favoriteFlightIds.contains(flight.id)) {
+      _favoriteFlightIds.remove(flight.id);
     } else {
-      _favoriteFlightIds.add(flightId);
+      _favoriteFlightIds.add(flight.id);
     }
     notifyListeners();
   }
