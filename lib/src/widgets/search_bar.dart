@@ -23,6 +23,8 @@ class _FlightSearchBarState extends State<FlightSearchBar> {
    Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showCalendar(
       context,
+      minDate: DateTime.now().subtract(const Duration(days: 7)),
+      maxDate: DateTime.now().add(const Duration(days: 7))
     );
 
     if (picked != null) {

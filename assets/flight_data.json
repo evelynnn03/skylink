@@ -56,12 +56,36 @@
   },
 
 
-
-  
   {
-    "flight_code": "AA1665",
-    "scheduled_dep_timestamp": "2025-05-04T08:26:00",
-    "scheduled_arr_timestamp": "2025-05-04T15:45:00",
+    "flight_code": "AA575",
+    "scheduled_dep_timestamp": "2025-06-27T05:00:00",
+    "scheduled_arr_timestamp": "2025-06-27T08:36:00",
+    "origin_airport": "DFW",
+    "destination_airport": "CLT",
+    "origin_latitude": 32.8968,
+    "origin_longitude": -97.038,
+    "destination_latitude": 35.214,
+    "destination_longitude": -80.9431,
+    "distance": 936,
+    "season": "Summer"
+  },
+  {
+    "flight_code": "G36247",
+    "scheduled_dep_timestamp": "2025-06-26T11:09:00",
+    "scheduled_arr_timestamp": "2025-06-26T11:58:00",
+    "origin_airport": "DFW",
+    "destination_airport": "LAS",
+    "origin_latitude": 32.8968,
+    "origin_longitude": -97.038,
+    "destination_latitude": 36.0801,
+    "destination_longitude": -115.152,
+    "distance": 1055,
+    "season": "Summer"
+  },
+  {
+    "flight_code": "AA2981",
+    "scheduled_dep_timestamp": "2025-06-26T12:12:00",
+    "scheduled_arr_timestamp": "2025-06-26T19:45:00",
     "origin_airport": "LAS",
     "destination_airport": "CLT",
     "origin_latitude": 36.0801,
@@ -69,7 +93,7 @@
     "destination_latitude": 35.214,
     "destination_longitude": -80.9431,
     "distance": 1916,
-    "season": "Spring"
+    "season": "Summer"
   }
   
   

@@ -114,7 +114,6 @@ class _MyTextFieldState extends State<MyTextField> {
           fillColor: Colors.white,
           filled: true,
 
-          // Customize the appearance during error state
           errorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.red),
             borderRadius: const BorderRadius.all(

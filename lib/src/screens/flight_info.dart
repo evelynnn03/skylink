@@ -453,7 +453,7 @@ class _FlightInfoState extends State<FlightInfo> {
                                       else if (_weather!['conditions'] == 3 ||
                                           _weather!['conditions'] == 4)
                                         Icon(
-                                          Icons.grain,
+                                          Icons.water_drop,
                                           color: Colors.blue,
                                           size: Variables.responsiveIconSize(
                                               context, 80),
